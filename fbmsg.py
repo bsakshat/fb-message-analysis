@@ -14,6 +14,7 @@ def m_files(location):
         print("\nNo such location")
     return files
 
+
 def fixup_str(text):
     return text.encode('latin1').decode('utf8')
 
@@ -65,7 +66,7 @@ def parse(files):
                 continue
             d = {'time': str(time), 'sender': sender, 'message': msg}
             out.append(d.copy())
-        out_msg = {'participants': parts, 'messages': out}
+    out_msg = {'participants': parts, 'messages': out}
     return out_msg
 
 
@@ -95,11 +96,52 @@ def count(msg):
     return total_count, details, words
 
 
+def p_words(total_count, unique_count, details, from_date, to_date):
+    print("\nMessages from", from_date ,"to", to_date, "\n")
+    print("Total no. of words in the group:", total_count, "\n")
+    print("Total no. of unique words in the group:", unique_count, "\n")
+    for i in details:
+        print(i, ":", details[i]['count'])
+    print()
+
+
+def stop(words):
+    sorted_words = sorted(words.items(), key=lambda word: word[1]['count'], reverse = True)
+    stop_words = []
+    i = 0
+    for s in sorted_words:
+        i += 1
+        #print(s[0], ":", s[1]['count'])
+        stop_words.append(s[0])
+        if i > 50:
+            break
+    return stop_words
+
+
+def parts_count(details, words):
+    parts = {k: {} for k in details}
+    for k, v in words.items():
+        for i in v:
+            if i == 'count':
+                continue
+            else:
+                if v[i] != 0:
+                    parts[i][k] = v[i]
+    return parts
+
+
+def words_parts(parts):
+    parts_sorted = {}
+    for i in parts:
+        parts_sorted[i] = sorted(parts[i].items(), key=lambda part: part[1], reverse=True)
+    return parts_sorted
+
 
 def main():
+    g_name = input("Enter the group Name:")
     files = []
     while files == []:
-        location = input("Enter the location of the message files \n(Just press 'Enter' if in the same folder):")
+        location = input("\nEnter the location of the message files \n(Just press 'Enter' if in the same folder):")
         files = m_files(location)
         if files == []:
             print("No json message files in the location \n")
@@ -108,12 +150,24 @@ def main():
             for m in files:
                 print(m.strip(location + "/"))
             break
-    
+    print("\nWords Analysis for", g_name)
     msg = parse(files)
+    from_date = msg['messages'][-1]['time'][:-7]
+    to_date = msg['messages'][0]['time'][:-7]
     total_count, details, words = count(msg)
-    print(msg['participants'])
-    print(total_count)
-    print(details)
+    unique_count = len(words)
+    p_words(total_count, unique_count, details, from_date, to_date)
+    stop_words = stop(words)
+    print("Top 50 words: \n")
+    for i in stop_words:
+        print(i, end=", ")
+    parts = parts_count(details, words)
+    parts_sorted = words_parts(parts)
+    for i in parts_sorted:
+        print()
+        print(i)
+        for j in range(50):
+            print(parts_sorted[i][j][0], end=", ")
     input()
     
 
