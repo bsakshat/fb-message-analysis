@@ -168,7 +168,13 @@ def main():
         print(i)
         for j in range(50):
             print(parts_sorted[i][j][0], end=", ")
-    input()
+    input_word = True
+    while input_word:
+        input_word = input("\nEnter the word to see the count:")
+        for i in words[input_word]: 
+            print(i, ":", words[input_word][i])
+    input("Enter to exit:")
+    
     
 
 if __name__ == "__main__":
