@@ -6,7 +6,7 @@ from datetime import datetime
 class Logger(object):
     def __init__(self, filename):
         self.terminal = sys.stdout
-        self.grpfile = open(filename, "w", encoding="utf-8")
+        self.grpfile = open(filename, "a", encoding="utf-8")
 
     def write(self, message):
         self.terminal.write(message)
@@ -142,9 +142,10 @@ def p_words(g_name, total_count, details, words, from_date, to_date):
         print("\n")
         print(i + ":")
         print(*(parts_sorted[i][j][0] for j in range(50)), sep=', ', end='')
-    print()
-    print_word_count(words, filename)   
+    print("\n")
     stop_file()
+    print_word_count(words, filename)  
+    return 
 
 
 def stop(words):
@@ -180,19 +181,18 @@ def print_word_count(words, filename):
     input_word = True
     while input_word:
         input_word = input("\n\nEnter the word to see the count:")
-        print()
         if input_word == "":
             break
         try:
             words_input = words[input_word]
         except KeyError:
-            print("No such word in the message.")
-            del_line()
+            print("\nNo such word in the message.")
         else:
-            del_line()
-            print("Word: ", input_word, "\n")
+            start_file(filename)
+            print("\n\nWord: ", input_word, "\n")
             for i in words_input: 
-                print(i, ":", words_input[i])             
+                print(i, ":", words_input[i])
+            stop_file()             
     return
             
 
