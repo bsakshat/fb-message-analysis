@@ -1,4 +1,4 @@
-# Facebook Message Parser
+# Facebook Message Analysis
 A simple program to parse and analyse facebook messages from downloaded file.
 
 To run the program, download the fbmsg.py file from this repository.   
@@ -16,7 +16,7 @@ For example, in the following directory structure:
 
 </pre>
 
-If you want to process the message files inside group_A folder, provide 'messages\group_A' for windows or 'messages/group_A' for Linux (without the single quotes).    
+If you want to process the message files inside group_A folder, provide 'messages\group_A' for Windows or 'messages/group_A' for Linux (without the single quotes).    
 
 A file will also be created named group_name_analysis.txt in the same folder as the fbmsg.py file.    
 
