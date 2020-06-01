@@ -143,9 +143,13 @@ def p_words(g_name, total_count, details, words, from_date, to_date):
     parts = parts_count(details, words)
     parts_sorted = words_parts(parts)
     for i in parts_sorted:
+        if len(parts_sorted[i]) > 50: 
+            number = 50 
+        else: 
+            number = len(parts_sorted[i])
         print("\n")
         print(i + ":")
-        print(*(parts_sorted[i][j][0] for j in range(50)), sep=', ', end='')
+        print(*(parts_sorted[i][j][0] for j in range(number)), sep=', ', end='')
     print("\n")
     if start: stop_file()
     print_word_count(words, filename)  
