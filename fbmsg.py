@@ -1,4 +1,5 @@
 import os
+import os.path
 import sys
 import json
 from datetime import datetime
@@ -126,7 +127,10 @@ def count(msg):
 
 def p_words(g_name, total_count, details, words, from_date, to_date):
     filename = g_name.replace(" ", "_") + "_analysis.txt"
-    start_file(filename)
+    start = False
+    if not os.path.isfile(filename):
+        start = True 
+        start_file(filename)
     print("Words Analysis for '" + g_name + "'")
     print("\nMessages from", from_date ,"to", to_date, "\n")
     print("Total no. of unique words in the group:", len(words), "\n")
@@ -143,7 +147,7 @@ def p_words(g_name, total_count, details, words, from_date, to_date):
         print(i + ":")
         print(*(parts_sorted[i][j][0] for j in range(50)), sep=', ', end='')
     print("\n")
-    stop_file()
+    if start: stop_file()
     print_word_count(words, filename)  
     return 
 
